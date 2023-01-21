@@ -15,8 +15,8 @@
       <h5 class="card-title">Ocena: {{clip.score}}</h5>
       <p class="card-text">{{clip.description}}</p>
       <p class="card-text">Dodano: {{clip.added}}</p>
-      <a href="#" class="btn btn-success">Podoba mi się</a>
-      <a href="#" class="btn btn-danger">Nie podoba mi się</a>
+      <a href="/like/{{clip.id}}" class="btn btn-success">Podoba mi się</a>
+      <a href="/unlike/{{clip.id}}" class="btn btn-danger">Nie podoba mi się</a>
     </div>
   </div>
 

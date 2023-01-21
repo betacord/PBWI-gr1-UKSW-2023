@@ -55,5 +55,27 @@ def watch_clip(clip_id):
     abort(404)
 
 
+@app.route('/like/<int:clip_id>')
+def like_clip(clip_id):
+    if clip := ClipModel.find_by_id(clip_id):
+        clip.score += 1
+        clip.save()
+
+        return redirect(request.referrer)
+
+    abort(404)
+
+
+@app.route('/unlike/<int:clip_id>')
+def unlike_clip(clip_id):
+    if clip := ClipModel.find_by_id(clip_id):
+        clip.score -= 1
+        clip.save()
+
+        return redirect(request.referrer)
+
+    abort(404)
+
+
 if __name__ == '__main__':
     app.run()
