@@ -1,5 +1,7 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect
 from flask_migrate import Migrate
+
+from datetime import datetime
 
 from db import db
 from models.clip import ClipModel
@@ -21,7 +23,26 @@ def index():
         newest_clips=newest_clips,
         highest_rated=highest_rated,
     )
-# https://i.ytimg.com/vi/7p6JPZf8c8g/hqdefault.jpg
+
+
+@app.route('/add', methods=['GET', 'POST'])  # 127.0.0.1:5000/add
+def add_clip():
+    if request.method == 'POST':
+        req = request.form
+
+        new_clip = ClipModel(
+            title=req['title'],
+            description=req['description'],
+            link_yt=req['link_yt'],
+            link_img=req['link_yt'],
+            added=datetime.now().timestamp(),
+            score=0,
+        )
+        new_clip.save()
+
+        return redirect(request.url)
+
+    return render_template('add.html')
 
 
 if __name__ == '__main__':
