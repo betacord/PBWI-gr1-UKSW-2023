@@ -2,6 +2,7 @@ from flask import Flask, render_template
 from flask_migrate import Migrate
 
 from db import db
+from models.clip import ClipModel
 
 app = Flask(__name__)
 app.config.from_object('config')
@@ -12,15 +13,15 @@ migrate = Migrate(app, db)
 
 @app.route('/')
 def index():
+    newest_clips = ClipModel.last_added(3)
+    highest_rated = ClipModel.highest_rated(3)
+
     return render_template(
         'index.html',
-        img_src='https://i.ytimg.com/vi/7p6JPZf8c8g/hqdefault.jpg',
-        clip_title='Don Braden with Freddie Hubbard in Warsaw 1991 - Bolivia',
-        clip_description='This performance of Cedar Walton''s "Bolivia" is from Don Braden''s last gig with Freddie '
-                         'Hubbard, after a 2-1/2 year stint.  It was performed in Warsaw, Poland in October of 1991, '
-                         'and features Jeff Chambers on bass, Ralph Penland on drums, Ronnie Matthews on piano, '
-                         'Don on tenor sax, and the Master, Freddie Hubbard on trumpet.',
+        newest_clips=newest_clips,
+        highest_rated=highest_rated,
     )
+# https://i.ytimg.com/vi/7p6JPZf8c8g/hqdefault.jpg
 
 
 if __name__ == '__main__':
