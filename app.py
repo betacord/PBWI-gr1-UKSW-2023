@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, abort
 from flask_migrate import Migrate
 
 from datetime import datetime
@@ -43,6 +43,16 @@ def add_clip():
         return redirect(request.url)
 
     return render_template('add.html')
+
+
+@app.route('/clip/<int:clip_id>')
+def watch_clip(clip_id):
+    if clip := ClipModel.find_by_id(clip_id):
+        clip.added = datetime.fromtimestamp(clip.added)
+
+        return render_template('watch.html', clip=clip)
+
+    abort(404)
 
 
 if __name__ == '__main__':
